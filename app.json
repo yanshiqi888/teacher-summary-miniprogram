@@ -1,9 +1,12 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/class-summary/class-summary",
+    "pages/student-comment/student-comment",
     "pages/dept-summary/dept-summary",
     "pages/dept-plan/dept-plan",
+    "pages/class-summary/class-summary",
+    "pages/class-plan/class-plan",
+    "pages/feedback/feedback",
     "pages/history/history",
     "pages/preview/preview"
   ],

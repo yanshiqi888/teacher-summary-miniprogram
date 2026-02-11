@@ -1,58 +1,78 @@
 <!-- 科室工作计划 -->
 <view class="container">
+  <!-- 基本信息 -->
   <view class="card">
+    <view class="section-title">基本信息</view>
+    
     <view class="form-item">
-      <view class="form-label">科室名称 *</view>
+      <view class="form-label"><text class="required">*</text>科室名称</view>
       <input 
         class="form-input" 
-        placeholder="例如：语文教研组"
-        data-field="deptName"
-        bindinput="onInputChange"
+        placeholder="如：语文教研组"
         value="{{formData.deptName}}"
+        bindinput="onDeptNameChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">负责人姓名 *</view>
+      <view class="form-label"><text class="required">*</text>学期</view>
       <input 
         class="form-input" 
-        placeholder="请输入负责人姓名"
-        data-field="leaderName"
-        bindinput="onInputChange"
-        value="{{formData.leaderName}}"
-      />
-    </view>
-
-    <view class="form-item">
-      <view class="form-label">学期 *</view>
-      <input 
-        class="form-input" 
-        placeholder="例如：2023-2024学年第二学期"
-        data-field="semester"
-        bindinput="onInputChange"
+        placeholder="如：2023-2024学年第二学期"
         value="{{formData.semester}}"
+        bindinput="onSemesterChange"
       />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label"><text class="required">*</text>计划长度</view>
+      <picker 
+        class="form-picker" 
+        mode="selector" 
+        range="{{lengthOptions}}"
+        value="{{lengthIndex}}"
+        bindchange="onLengthChange"
+      >
+        <view>{{lengthOptions[lengthIndex]}}</view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label"><text class="required">*</text>写作风格</view>
+      <picker 
+        class="form-picker" 
+        mode="selector" 
+        range="{{styleOptions}}"
+        value="{{styleIndex}}"
+        bindchange="onStyleChange"
+      >
+        <view>{{styleOptions[styleIndex]}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 计划内容 -->
+  <view class="card">
+    <view class="section-title">计划内容（选填）</view>
+
+    <view class="form-item">
+      <view class="form-label">计划开展的活动/工作</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="如：计划开展3次公开课、组织教学比赛、进行课题研究等"
+        value="{{formData.activities}}"
+        bindinput="onActivitiesChange"
+      />
+      <view class="tip">简单列举即可，AI 会自动扩展成完整描述</view>
     </view>
 
     <view class="form-item">
       <view class="form-label">工作目标</view>
       <textarea 
         class="form-textarea" 
-        placeholder="请描述下学期的主要工作目标"
-        data-field="goals"
-        bindinput="onInputChange"
+        placeholder="如：提升教学质量、促进教师专业发展等"
         value="{{formData.goals}}"
-      />
-    </view>
-
-    <view class="form-item">
-      <view class="form-label">重点工作</view>
-      <textarea 
-        class="form-textarea" 
-        placeholder="请列举下学期的重点工作内容"
-        data-field="keyWork"
-        bindinput="onInputChange"
-        value="{{formData.keyWork}}"
+        bindinput="onGoalsChange"
       />
     </view>
 
@@ -60,10 +80,9 @@
       <view class="form-label">具体措施</view>
       <textarea 
         class="form-textarea" 
-        placeholder="请说明实现目标的具体措施"
-        data-field="measures"
-        bindinput="onInputChange"
+        placeholder="如：加强集体备课、开展听评课活动等"
         value="{{formData.measures}}"
+        bindinput="onMeasuresChange"
       />
     </view>
 
@@ -71,26 +90,14 @@
       <view class="form-label">时间安排</view>
       <textarea 
         class="form-textarea" 
-        placeholder="请说明各项工作的时间安排"
-        data-field="schedule"
-        bindinput="onInputChange"
+        placeholder="如：每月第一周教研会、期中组织公开课等"
         value="{{formData.schedule}}"
+        bindinput="onScheduleChange"
       />
     </view>
-
-    <view class="form-item">
-      <view class="form-label">预期成果</view>
-      <textarea 
-        class="form-textarea" 
-        placeholder="请描述预期达到的成果"
-        data-field="expectedResults"
-        bindinput="onInputChange"
-        value="{{formData.expectedResults}}"
-      />
-    </view>
-
-    <button class="btn-primary" bindtap="generatePlan">
-      生成计划
-    </button>
   </view>
+
+  <button class="btn-primary" bindtap="generatePlan">
+    生成工作计划
+  </button>
 </view>

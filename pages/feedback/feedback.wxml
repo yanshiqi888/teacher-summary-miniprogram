@@ -1,0 +1,42 @@
+<!-- 反馈页面 -->
+<view class="container">
+  <view class="card" wx:if="{{!submitted}}">
+    <view class="header-text">有需求，直接提</view>
+    <view class="sub-text">我们会认真听取每一条建议</view>
+
+    <view class="form-item">
+      <view class="form-label">说说您的想法</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="功能建议、问题反馈、内容质量等..."
+        value="{{content}}"
+        bindinput="onContentChange"
+        maxlength="500"
+      />
+      <view class="tip">{{content.length}}/500</view>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">留个联系方式？（选填）</view>
+      <input 
+        class="form-input" 
+        placeholder="方便我们回复您"
+        value="{{contact}}"
+        bindinput="onContactChange"
+      />
+      <view class="tip">手机号、微信号等</view>
+    </view>
+
+    <button class="btn-primary" bindtap="submitFeedback">
+      提交
+    </button>
+  </view>
+
+  <!-- 提交成功 -->
+  <view class="card success-card" wx:if="{{submitted}}">
+    <view class="success-icon">✅</view>
+    <view class="success-title">收到！</view>
+    <view class="success-desc">您的建议已发送给开发者\n我们会认真对待每一条反馈</view>
+    <button class="btn-back" bindtap="goBack">返回首页</button>
+  </view>
+</view>

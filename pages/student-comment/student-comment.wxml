@@ -1,0 +1,40 @@
+<!-- 学生评语 -->
+<view class="container">
+  <view class="card">
+    <view class="form-item">
+      <view class="form-label">生成数量</view>
+      <input 
+        class="form-input" 
+        type="number"
+        placeholder="请输入需要生成的评语数量"
+        value="{{count}}"
+        bindinput="onCountChange"
+      />
+      <view class="tip">建议一次生成 20-50 条</view>
+    </view>
+
+    <button class="btn-primary" bindtap="generateComments">
+      生成评语
+    </button>
+  </view>
+
+  <!-- 生成的评语列表 -->
+  <view class="comment-list" wx:if="{{comments.length > 0}}">
+    <view class="comment-item" wx:for="{{comments}}" wx:key="index">
+      <view class="comment-header">
+        <text class="comment-index">评语 {{index + 1}}</text>
+        <view class="comment-actions">
+          <button class="btn-small btn-copy-small" data-index="{{index}}" bindtap="copyComment">复制</button>
+          <button class="btn-small btn-regenerate" data-index="{{index}}" bindtap="regenerateComment">重新生成</button>
+        </view>
+      </view>
+      <text class="comment-text">{{item}}</text>
+    </view>
+
+    <!-- 导出按钮 -->
+    <view class="export-actions">
+      <button class="btn-export" bindtap="exportExcel">导出 Excel</button>
+      <button class="btn-export-text" bindtap="exportText">导出文本</button>
+    </view>
+  </view>
+</view>

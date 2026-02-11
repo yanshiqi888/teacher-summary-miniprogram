@@ -1,4 +1,4 @@
-<!-- 班主任工作总结 -->
+<!-- 班主任工作计划 -->
 <view class="container">
   <!-- 基本信息 -->
   <view class="card">
@@ -29,14 +29,14 @@
       <view class="form-label"><text class="required">*</text>学期</view>
       <input 
         class="form-input" 
-        placeholder="如：2023-2024学年第一学期"
+        placeholder="如：2024-2025学年第二学期"
         value="{{formData.semester}}"
         bindinput="onSemesterChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label"><text class="required">*</text>总结长度</view>
+      <view class="form-label"><text class="required">*</text>计划长度</view>
       <picker 
         class="form-picker" 
         mode="selector" 
@@ -62,87 +62,87 @@
     </view>
   </view>
 
-  <!-- 工作内容 -->
+  <!-- 计划内容 -->
   <view class="card">
-    <view class="section-title">工作内容（选填）</view>
+    <view class="section-title">计划内容（选填）</view>
 
     <view class="form-item">
-      <view class="form-label">班级管理</view>
+      <view class="form-label">班级管理计划</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：选拔班干部、制定班规、每周班会等"
+        placeholder="如：计划调整班干部、完善班规、每周主题班会等"
         value="{{formData.management}}"
         bindinput="onManagementChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">德育工作</view>
+      <view class="form-label">德育工作计划</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：开展感恩教育、组织志愿服务、主题班会等"
+        placeholder="如：计划开展诚信教育、组织社会实践、主题教育活动等"
         value="{{formData.moral}}"
         bindinput="onMoralChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">学习指导</view>
+      <view class="form-label">学习指导计划</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：成立学习小组、开展学法交流、成绩有提升等"
+        placeholder="如：计划建立互助小组、开展学法指导、提升整体成绩等"
         value="{{formData.study}}"
         bindinput="onStudyChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">活动开展</view>
+      <view class="form-label">活动计划</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：组织秋游、参加运动会、班级文化建设等"
+        placeholder="如：计划组织春游、参加校运会、班级文化评比等"
         value="{{formData.activities}}"
         bindinput="onActivitiesChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">家校沟通</view>
+      <view class="form-label">家校沟通计划</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：召开家长会、家访10人次、建立家长群等"
+        placeholder="如：计划召开2次家长会、家访重点学生、加强家校联系等"
         value="{{formData.homeSchool}}"
         bindinput="onHomeSchoolChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">个别教育</view>
+      <view class="form-label">个别教育计划</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：转化后进生3名、关注特殊学生、个别谈心等"
+        placeholder="如：计划重点关注后进生、定期谈心、建立成长档案等"
         value="{{formData.individual}}"
         bindinput="onIndividualChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">班风学风建设</view>
+      <view class="form-label">班风学风建设计划</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：营造积极向上氛围、形成良好学习风气等"
+        placeholder="如：计划营造竞争氛围、树立学习榜样、形成良好风气等"
         value="{{formData.atmosphere}}"
         bindinput="onAtmosphereChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">存在问题</view>
+      <view class="form-label">工作目标</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：部分学生自律性不够、班级凝聚力待加强等"
-        value="{{formData.problems}}"
-        bindinput="onProblemsChange"
+        placeholder="如：班级纪律明显改善、学习成绩稳步提升等"
+        value="{{formData.goals}}"
+        bindinput="onGoalsChange"
       />
     </view>
 
@@ -150,14 +150,14 @@
       <view class="form-label">特别补充</view>
       <textarea 
         class="form-textarea" 
-        placeholder="其他想要在总结中体现的内容，自由发挥"
+        placeholder="其他想要在计划中体现的内容，自由发挥"
         value="{{formData.extra}}"
         bindinput="onExtraChange"
       />
     </view>
   </view>
 
-  <button class="btn-primary" bindtap="generateSummary">
-    生成工作总结
+  <button class="btn-primary" bindtap="generatePlan">
+    生成工作计划
   </button>
 </view>

@@ -6,11 +6,11 @@
   </view>
 
   <view class="function-list">
-    <view class="function-card" bindtap="goToClassSummary">
-      <view class="icon">📝</view>
+    <view class="function-card" bindtap="goToStudentComment">
+      <view class="icon">✍️</view>
       <view class="function-info">
-        <text class="function-title">班主任工作总结</text>
-        <text class="function-desc">生成学期班级管理总结</text>
+        <text class="function-title">学生评语</text>
+        <text class="function-desc">批量生成学生期末评语</text>
       </view>
       <view class="arrow">›</view>
     </view>
@@ -33,6 +33,24 @@
       <view class="arrow">›</view>
     </view>
 
+    <view class="function-card" bindtap="goToClassSummary">
+      <view class="icon">📝</view>
+      <view class="function-info">
+        <text class="function-title">班主任工作总结</text>
+        <text class="function-desc">生成学期班级管理总结</text>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+
+    <view class="function-card" bindtap="goToClassPlan">
+      <view class="icon">📋</view>
+      <view class="function-info">
+        <text class="function-title">班主任工作计划</text>
+        <text class="function-desc">制定下学期班级计划</text>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+
     <view class="function-card" bindtap="goToHistory">
       <view class="icon">🗂️</view>
       <view class="function-info">
@@ -40,6 +58,15 @@
         <text class="function-desc">查看已生成的文档</text>
       </view>
       <view class="arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 反馈入口 -->
+  <view class="feedback-card" bindtap="goToFeedback">
+    <view class="feedback-icon">💬</view>
+    <view class="feedback-info">
+      <text class="feedback-title">有需求，直接提</text>
+      <text class="feedback-desc">我们会认真听取每一条建议</text>
     </view>
   </view>
 </view>

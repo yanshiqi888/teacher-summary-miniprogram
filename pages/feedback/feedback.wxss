@@ -10,17 +10,20 @@ page {
   background: white;
   border-radius: 16rpx;
   padding: 40rpx;
-  margin-bottom: 30rpx;
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
 }
 
-.section-title {
+.header-text {
   font-size: 32rpx;
   font-weight: 600;
   color: #333;
-  margin-bottom: 30rpx;
-  padding-bottom: 16rpx;
-  border-bottom: 2rpx solid #f0f0f0;
+  margin-bottom: 16rpx;
+}
+
+.sub-text {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 40rpx;
 }
 
 .form-item {
@@ -34,9 +37,14 @@ page {
   font-weight: 500;
 }
 
-.required {
-  color: #ff4d4f;
-  margin-right: 4rpx;
+.form-textarea {
+  width: 100%;
+  min-height: 300rpx;
+  padding: 20rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
 }
 
 .form-input {
@@ -48,30 +56,10 @@ page {
   box-sizing: border-box;
 }
 
-.form-textarea {
-  width: 100%;
-  min-height: 200rpx;
-  padding: 20rpx;
-  border: 2rpx solid #e8e8e8;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  box-sizing: border-box;
-}
-
-.form-picker {
-  width: 100%;
-  padding: 20rpx;
-  border: 2rpx solid #e8e8e8;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  background: white;
-}
-
 .tip {
   font-size: 24rpx;
   color: #999;
   margin-top: 8rpx;
-  line-height: 1.6;
 }
 
 .btn-primary {
@@ -87,4 +75,38 @@ page {
 
 .btn-primary:active {
   opacity: 0.8;
+}
+
+.success-card {
+  text-align: center;
+  padding: 60rpx 40rpx;
+}
+
+.success-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.success-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.success-desc {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 40rpx;
+}
+
+.btn-back {
+  width: 100%;
+  background: #4A90E2;
+  color: white;
+  font-size: 32rpx;
+  padding: 24rpx;
+  border-radius: 12rpx;
+  border: none;
 }

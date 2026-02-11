@@ -1,81 +1,88 @@
 <!-- 科室工作总结 -->
 <view class="container">
+  <!-- 基本信息 -->
   <view class="card">
+    <view class="section-title">基本信息</view>
+    
     <view class="form-item">
-      <view class="form-label">科室名称 *</view>
+      <view class="form-label"><text class="required">*</text>科室名称</view>
       <input 
         class="form-input" 
-        placeholder="例如：语文教研组"
-        data-field="deptName"
-        bindinput="onInputChange"
+        placeholder="如：教务处、德育处等"
         value="{{formData.deptName}}"
+        bindinput="onDeptNameChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">负责人姓名 *</view>
+      <view class="form-label"><text class="required">*</text>学期</view>
       <input 
         class="form-input" 
-        placeholder="请输入负责人姓名"
-        data-field="leaderName"
-        bindinput="onInputChange"
-        value="{{formData.leaderName}}"
-      />
-    </view>
-
-    <view class="form-item">
-      <view class="form-label">学期 *</view>
-      <input 
-        class="form-input" 
-        placeholder="例如：2023-2024学年第一学期"
-        data-field="semester"
-        bindinput="onInputChange"
+        placeholder="如：2023-2024学年第一学期"
         value="{{formData.semester}}"
+        bindinput="onSemesterChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">成员人数</view>
-      <input 
-        class="form-input" 
-        type="number"
-        placeholder="请输入科室成员人数"
-        data-field="memberCount"
-        bindinput="onInputChange"
-        value="{{formData.memberCount}}"
-      />
+      <view class="form-label"><text class="required">*</text>总结长度</view>
+      <picker 
+        class="form-picker" 
+        mode="selector" 
+        range="{{lengthOptions}}"
+        value="{{lengthIndex}}"
+        bindchange="onLengthChange"
+      >
+        <view>{{lengthOptions[lengthIndex]}}</view>
+      </picker>
     </view>
 
     <view class="form-item">
-      <view class="form-label">主要工作内容</view>
+      <view class="form-label"><text class="required">*</text>写作风格</view>
+      <picker 
+        class="form-picker" 
+        mode="selector" 
+        range="{{styleOptions}}"
+        value="{{styleIndex}}"
+        bindchange="onStyleChange"
+      >
+        <view>{{styleOptions[styleIndex]}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 工作内容 -->
+  <view class="card">
+    <view class="section-title">工作内容（选填）</view>
+
+    <view class="form-item">
+      <view class="form-label">关键事件</view>
       <textarea 
         class="form-textarea" 
-        placeholder="请描述本学期开展的主要工作"
-        data-field="mainWork"
-        bindinput="onInputChange"
-        value="{{formData.mainWork}}"
+        placeholder="如：开3次教研会、组织期中期末考试、开展公开课等"
+        value="{{formData.events}}"
+        bindinput="onEventsChange"
       />
+      <view class="tip">简单列举即可，AI 会自动扩展</view>
     </view>
 
     <view class="form-item">
-      <view class="form-label">取得的成绩</view>
+      <view class="form-label">取得成绩</view>
       <textarea 
         class="form-textarea" 
-        placeholder="请列举本学期取得的主要成绩"
-        data-field="achievements"
-        bindinput="onInputChange"
+        placeholder="如：教学质量提升、教师获奖、学生成绩进步等"
         value="{{formData.achievements}}"
+        bindinput="onAchievementsChange"
       />
     </view>
 
     <view class="form-item">
-      <view class="form-label">存在的问题</view>
+      <view class="form-label">存在问题</view>
       <textarea 
         class="form-textarea" 
-        placeholder="请描述工作中存在的问题和不足"
-        data-field="problems"
-        bindinput="onInputChange"
+        placeholder="如：部分工作落实不到位、教研深度不够等"
         value="{{formData.problems}}"
+        bindinput="onProblemsChange"
       />
     </view>
 
@@ -83,15 +90,14 @@
       <view class="form-label">改进建议</view>
       <textarea 
         class="form-textarea" 
-        placeholder="请提出下学期的改进建议"
-        data-field="suggestions"
-        bindinput="onInputChange"
+        placeholder="如：加强教研力度、完善管理制度等"
         value="{{formData.suggestions}}"
+        bindinput="onSuggestionsChange"
       />
     </view>
-
-    <button class="btn-primary" bindtap="generateSummary">
-      生成总结
-    </button>
   </view>
+
+  <button class="btn-primary" bindtap="generateSummary">
+    生成工作总结
+  </button>
 </view>

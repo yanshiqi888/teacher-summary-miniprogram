@@ -15,7 +15,7 @@ Page({
       homeSchool: '',
       individual: '',
       atmosphere: '',
-      problems: '',
+      goals: '',
       extra: ''
     }
   },
@@ -92,9 +92,9 @@ Page({
     })
   },
 
-  onProblemsChange(e) {
+  onGoalsChange(e) {
     this.setData({
-      'formData.problems': e.detail.value
+      'formData.goals': e.detail.value
     })
   },
 
@@ -104,7 +104,7 @@ Page({
     })
   },
 
-  generateSummary() {
+  generatePlan() {
     const { className, studentCount, semester } = this.data.formData
 
     if (!className || !studentCount || !semester) {
@@ -119,11 +119,11 @@ Page({
       title: '生成中...'
     })
 
-    // TODO: 调用云函数生成总结
+    // TODO: 调用云函数生成计划
     setTimeout(() => {
       wx.hideLoading()
       wx.navigateTo({
-        url: '/pages/preview/preview?type=class-summary'
+        url: '/pages/preview/preview?type=class-plan'
       })
     }, 2000)
   }
