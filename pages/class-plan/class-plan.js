@@ -1,6 +1,6 @@
 Page({
   data: {
-    lengthOptions: ['简短版 (500-800字)', '标准版 (1000-1500字)', '详细版 (2000字以上)'],
+    lengthOptions: ['简短版 (800-1200字)', '标准版 (1500-2000字)', '详细版 (2500字以上)'],
     styleOptions: ['传统公文体', '朴实务实', '简洁明快', '生动活泼'],
     lengthIndex: 1,
     styleIndex: 0,
@@ -8,15 +8,17 @@ Page({
       className: '',
       studentCount: '',
       semester: '',
+      length: '标准版',
+      style: '传统公文体',
       management: '',
-      moral: '',
-      study: '',
+      moralEducation: '',
+      studyGuidance: '',
       activities: '',
-      homeSchool: '',
-      individual: '',
-      atmosphere: '',
+      parentCommunication: '',
+      individualEducation: '',
+      classSpirit: '',
       goals: '',
-      extra: ''
+      additional: ''
     }
   },
 
@@ -39,14 +41,19 @@ Page({
   },
 
   onLengthChange(e) {
+    const index = e.detail.value
+    const length = this.data.lengthOptions[index].split(' ')[0]
     this.setData({
-      lengthIndex: e.detail.value
+      lengthIndex: index,
+      'formData.length': length
     })
   },
 
   onStyleChange(e) {
+    const index = e.detail.value
     this.setData({
-      styleIndex: e.detail.value
+      styleIndex: index,
+      'formData.style': this.data.styleOptions[index]
     })
   },
 
@@ -56,15 +63,15 @@ Page({
     })
   },
 
-  onMoralChange(e) {
+  onMoralEducationChange(e) {
     this.setData({
-      'formData.moral': e.detail.value
+      'formData.moralEducation': e.detail.value
     })
   },
 
-  onStudyChange(e) {
+  onStudyGuidanceChange(e) {
     this.setData({
-      'formData.study': e.detail.value
+      'formData.studyGuidance': e.detail.value
     })
   },
 
@@ -74,21 +81,21 @@ Page({
     })
   },
 
-  onHomeSchoolChange(e) {
+  onParentCommunicationChange(e) {
     this.setData({
-      'formData.homeSchool': e.detail.value
+      'formData.parentCommunication': e.detail.value
     })
   },
 
-  onIndividualChange(e) {
+  onIndividualEducationChange(e) {
     this.setData({
-      'formData.individual': e.detail.value
+      'formData.individualEducation': e.detail.value
     })
   },
 
-  onAtmosphereChange(e) {
+  onClassSpiritChange(e) {
     this.setData({
-      'formData.atmosphere': e.detail.value
+      'formData.classSpirit': e.detail.value
     })
   },
 
@@ -98,13 +105,13 @@ Page({
     })
   },
 
-  onExtraChange(e) {
+  onAdditionalChange(e) {
     this.setData({
-      'formData.extra': e.detail.value
+      'formData.additional': e.detail.value
     })
   },
 
-  generatePlan() {
+  async generatePlan() {
     const { className, studentCount, semester } = this.data.formData
 
     if (!className || !studentCount || !semester) {
@@ -119,12 +126,32 @@ Page({
       title: '生成中...'
     })
 
-    // TODO: 调用云函数生成计划
-    setTimeout(() => {
-      wx.hideLoading()
-      wx.navigateTo({
-        url: '/pages/preview/preview?type=class-plan'
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'generateText',
+        data: {
+          type: 'class-plan',
+          formData: this.data.formData
+        }
       })
-    }, 2000)
+
+      wx.hideLoading()
+
+      if (res.result.success) {
+        wx.navigateTo({
+          url: '/pages/preview/preview?type=class-plan&content=' + encodeURIComponent(res.result.content)
+        })
+      } else {
+        throw new Error(res.result.error)
+      }
+    } catch (error) {
+      console.error('生成失败:', error)
+      wx.hideLoading()
+      wx.showModal({
+        title: '生成失败',
+        content: error.message || '请稍后重试',
+        showCancel: false
+      })
+    }
   }
 })

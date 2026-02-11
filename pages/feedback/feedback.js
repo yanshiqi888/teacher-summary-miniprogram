@@ -17,7 +17,7 @@ Page({
     })
   },
 
-  submitFeedback() {
+  async submitFeedback() {
     if (!this.data.content.trim()) {
       wx.showToast({
         title: '请输入反馈内容',
@@ -30,14 +30,33 @@ Page({
       title: '提交中...'
     })
 
-    // TODO: 调用云函数发送邮件
-    // 目前使用 Mock
-    setTimeout(() => {
-      wx.hideLoading()
-      this.setData({
-        submitted: true
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'sendEmail',
+        data: {
+          content: this.data.content.trim(),
+          contact: this.data.contact.trim()
+        }
       })
-    }, 1000)
+
+      wx.hideLoading()
+
+      if (res.result.success) {
+        this.setData({
+          submitted: true
+        })
+      } else {
+        throw new Error(res.result.error)
+      }
+    } catch (error) {
+      console.error('提交失败:', error)
+      wx.hideLoading()
+      wx.showModal({
+        title: '提交失败',
+        content: '网络异常，请稍后重试',
+        showCancel: false
+      })
+    }
   },
 
   goBack() {

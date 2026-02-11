@@ -48,6 +48,10 @@ page {
   box-sizing: border-box;
 }
 
+.form-input::placeholder {
+  color: #999;
+}
+
 .form-textarea {
   width: 100%;
   min-height: 200rpx;
@@ -56,6 +60,10 @@ page {
   border-radius: 8rpx;
   font-size: 28rpx;
   box-sizing: border-box;
+}
+
+.form-textarea::placeholder {
+  color: #999;
 }
 
 .form-picker {

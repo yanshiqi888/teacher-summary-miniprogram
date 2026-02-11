@@ -10,7 +10,7 @@ Page({
     })
   },
 
-  generateComments() {
+  async generateComments() {
     const count = parseInt(this.data.count)
     
     if (!count || count < 1) {
@@ -33,22 +33,37 @@ Page({
       title: '生成中...'
     })
 
-    // TODO: 调用云函数生成评语
-    // 目前使用 Mock 数据
-    setTimeout(() => {
-      const comments = []
-      for (let i = 0; i < count; i++) {
-        comments.push(this.generateMockComment())
-      }
-      
-      this.setData({ comments })
-      
-      wx.hideLoading()
-      wx.showToast({
-        title: '生成成功',
-        icon: 'success'
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'generateText',
+        data: {
+          type: 'student-comment',
+          formData: { count }
+        }
       })
-    }, 1000)
+      
+      if (res.result.success) {
+        // 将生成的文本按换行符分割成数组
+        const comments = res.result.content.split('\n').filter(c => c.trim())
+        this.setData({ comments })
+        
+        wx.hideLoading()
+        wx.showToast({
+          title: '生成成功',
+          icon: 'success'
+        })
+      } else {
+        throw new Error(res.result.error)
+      }
+    } catch (error) {
+      console.error('生成失败:', error)
+      wx.hideLoading()
+      wx.showModal({
+        title: '生成失败',
+        content: error.message || '请稍后重试',
+        showCancel: false
+      })
+    }
   },
 
   generateMockComment() {
@@ -78,7 +93,7 @@ Page({
     })
   },
 
-  regenerateComment(e) {
+  async regenerateComment(e) {
     const index = e.currentTarget.dataset.index
     const comments = this.data.comments
     
@@ -86,17 +101,36 @@ Page({
       title: '重新生成中...'
     })
 
-    // TODO: 调用云函数重新生成
-    setTimeout(() => {
-      comments[index] = this.generateMockComment()
-      this.setData({ comments })
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'generateText',
+        data: {
+          type: 'student-comment',
+          formData: { count: 1 }
+        }
+      })
       
+      if (res.result.success) {
+        const newComment = res.result.content.split('\n').filter(c => c.trim())[0]
+        comments[index] = newComment
+        this.setData({ comments })
+        
+        wx.hideLoading()
+        wx.showToast({
+          title: '已重新生成',
+          icon: 'success'
+        })
+      } else {
+        throw new Error(res.result.error)
+      }
+    } catch (error) {
+      console.error('重新生成失败:', error)
       wx.hideLoading()
       wx.showToast({
-        title: '已重新生成',
-        icon: 'success'
+        title: '生成失败，请重试',
+        icon: 'none'
       })
-    }, 500)
+    }
   },
 
   exportExcel() {

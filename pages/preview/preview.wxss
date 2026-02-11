@@ -1,21 +1,22 @@
-.container {
-  min-height: 100vh;
-  padding: 20rpx;
+page {
   background-color: #f5f5f5;
 }
 
-.content-card {
+.container {
+  padding: 30rpx;
+}
+
+.card {
   background: white;
   border-radius: 16rpx;
   padding: 40rpx;
   margin-bottom: 30rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-  min-height: 800rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
 }
 
-.content-text {
-  font-size: 30rpx;
-  line-height: 1.8;
+.content {
+  font-size: 28rpx;
+  line-height: 2;
   color: #333;
   white-space: pre-wrap;
   word-break: break-all;
@@ -24,25 +25,29 @@
 .actions {
   display: flex;
   gap: 20rpx;
-  padding: 0 20rpx 40rpx;
 }
 
-.btn-export {
+.btn-primary,
+.btn-secondary {
   flex: 1;
-  background: #4A90E2;
-  color: white;
   font-size: 32rpx;
   padding: 24rpx;
   border-radius: 12rpx;
-  font-weight: 600;
+  border: none;
 }
 
-.btn-copy {
-  flex: 1;
-  background: #52c41a;
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  font-size: 32rpx;
-  padding: 24rpx;
-  border-radius: 12rpx;
-  font-weight: 600;
+}
+
+.btn-secondary {
+  background: white;
+  color: #667eea;
+  border: 2rpx solid #667eea;
+}
+
+.btn-primary:active,
+.btn-secondary:active {
+  opacity: 0.8;
 }

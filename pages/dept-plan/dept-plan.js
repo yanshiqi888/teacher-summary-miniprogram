@@ -7,6 +7,8 @@ Page({
     formData: {
       deptName: '',
       semester: '',
+      length: '标准版',
+      style: '传统公文体',
       activities: '',
       goals: '',
       measures: '',
@@ -27,14 +29,19 @@ Page({
   },
 
   onLengthChange(e) {
+    const index = e.detail.value
+    const length = this.data.lengthOptions[index].split(' ')[0]
     this.setData({
-      lengthIndex: e.detail.value
+      lengthIndex: index,
+      'formData.length': length
     })
   },
 
   onStyleChange(e) {
+    const index = e.detail.value
     this.setData({
-      styleIndex: e.detail.value
+      styleIndex: index,
+      'formData.style': this.data.styleOptions[index]
     })
   },
 
@@ -62,7 +69,7 @@ Page({
     })
   },
 
-  generatePlan() {
+  async generatePlan() {
     const { deptName, semester } = this.data.formData
 
     if (!deptName || !semester) {
@@ -77,12 +84,32 @@ Page({
       title: '生成中...'
     })
 
-    // TODO: 调用云函数生成计划
-    setTimeout(() => {
-      wx.hideLoading()
-      wx.navigateTo({
-        url: '/pages/preview/preview?type=dept-plan'
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'generateText',
+        data: {
+          type: 'dept-plan',
+          formData: this.data.formData
+        }
       })
-    }, 2000)
+
+      wx.hideLoading()
+
+      if (res.result.success) {
+        wx.navigateTo({
+          url: '/pages/preview/preview?type=dept-plan&content=' + encodeURIComponent(res.result.content)
+        })
+      } else {
+        throw new Error(res.result.error)
+      }
+    } catch (error) {
+      console.error('生成失败:', error)
+      wx.hideLoading()
+      wx.showModal({
+        title: '生成失败',
+        content: error.message || '请稍后重试',
+        showCancel: false
+      })
+    }
   }
 })

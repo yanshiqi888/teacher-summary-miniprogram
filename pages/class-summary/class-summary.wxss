@@ -48,6 +48,10 @@ page {
   box-sizing: border-box;
 }
 
+.form-input::placeholder {
+  color: #999;
+}
+
 .form-picker {
   width: 100%;
   padding: 20rpx;
@@ -66,6 +70,10 @@ page {
   border-radius: 8rpx;
   font-size: 28rpx;
   box-sizing: border-box;
+}
+
+.form-textarea::placeholder {
+  color: #999;
 }
 
 .tip {
