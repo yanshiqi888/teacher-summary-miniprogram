@@ -48,6 +48,16 @@ page {
   box-sizing: border-box;
 }
 
+.form-picker {
+  width: 100%;
+  padding: 20rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  background: white;
+}
+
 .form-textarea {
   width: 100%;
   min-height: 200rpx;
@@ -58,20 +68,10 @@ page {
   box-sizing: border-box;
 }
 
-.form-picker {
-  width: 100%;
-  padding: 20rpx;
-  border: 2rpx solid #e8e8e8;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  background: white;
-}
-
 .tip {
   font-size: 24rpx;
   color: #999;
   margin-top: 8rpx;
-  line-height: 1.6;
 }
 
 .btn-primary {

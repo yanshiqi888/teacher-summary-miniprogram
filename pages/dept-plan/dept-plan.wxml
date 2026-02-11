@@ -8,7 +8,7 @@
       <view class="form-label"><text class="required">*</text>科室名称</view>
       <input 
         class="form-input" 
-        placeholder="如：语文教研组"
+        placeholder="如：教务处、德育处等"
         value="{{formData.deptName}}"
         bindinput="onDeptNameChange"
       />
@@ -18,7 +18,7 @@
       <view class="form-label"><text class="required">*</text>学期</view>
       <input 
         class="form-input" 
-        placeholder="如：2023-2024学年第二学期"
+        placeholder="如：2024-2025学年第二学期"
         value="{{formData.semester}}"
         bindinput="onSemesterChange"
       />
@@ -56,21 +56,21 @@
     <view class="section-title">计划内容（选填）</view>
 
     <view class="form-item">
-      <view class="form-label">计划开展的活动/工作</view>
+      <view class="form-label">计划活动</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：计划开展3次公开课、组织教学比赛、进行课题研究等"
+        placeholder="如：计划开展5次教研活动、组织教师培训、开展公开课等"
         value="{{formData.activities}}"
         bindinput="onActivitiesChange"
       />
-      <view class="tip">简单列举即可，AI 会自动扩展成完整描述</view>
+      <view class="tip">简单列举即可，AI 会自动扩展</view>
     </view>
 
     <view class="form-item">
       <view class="form-label">工作目标</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：提升教学质量、促进教师专业发展等"
+        placeholder="如：提升教学质量、加强教师队伍建设、完善管理制度等"
         value="{{formData.goals}}"
         bindinput="onGoalsChange"
       />
@@ -80,7 +80,7 @@
       <view class="form-label">具体措施</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：加强集体备课、开展听评课活动等"
+        placeholder="如：定期开展教研、建立听课制度、加强过程管理等"
         value="{{formData.measures}}"
         bindinput="onMeasuresChange"
       />
@@ -90,7 +90,7 @@
       <view class="form-label">时间安排</view>
       <textarea 
         class="form-textarea" 
-        placeholder="如：每月第一周教研会、期中组织公开课等"
+        placeholder="如：3月开展教研月、5月组织期中考试等"
         value="{{formData.schedule}}"
         bindinput="onScheduleChange"
       />
