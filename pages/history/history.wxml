@@ -1,0 +1,73 @@
+<!-- 历史记录 -->
+<view class="container">
+  <view class="header" wx:if="{{historyList.length > 0}}">
+    <text class="count">共 {{historyList.length}} 条记录</text>
+    <button class="btn-clear" bindtap="clearAll">清空全部</button>
+  </view>
+
+  <view class="empty" wx:if="{{historyList.length === 0}}">
+    <text class="empty-icon">📭</text>
+    <text class="empty-text">暂无历史记录</text>
+  </view>
+
+  <view class="history-list" wx:else>
+    <view 
+      class="history-item" 
+      wx:for="{{historyList}}" 
+      wx:key="index"
+    >
+      <view class="item-header">
+        <view class="item-type">{{item.typeName}}</view>
+        <view class="item-time">{{item.createTime}}</view>
+      </view>
+      
+      <view class="item-info">
+        <text class="info-text" wx:if="{{item.type === 'class-summary'}}">
+          {{item.formData.className}} - {{item.formData.teacherName}}
+        </text>
+        <text class="info-text" wx:else>
+          {{item.formData.deptName}} - {{item.formData.leaderName}}
+        </text>
+      </view>
+
+      <view class="item-actions">
+        <button 
+          class="btn-view" 
+          data-index="{{index}}"
+          bindtap="viewDetail"
+        >
+          查看
+        </button>
+        <button 
+          class="btn-delete" 
+          data-index="{{index}}"
+          bindtap="deleteItem"
+        >
+          删除
+        </button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<wxs module="utils">
+  var formatTime = function(timestamp) {
+    var date = getDate(timestamp)
+    var year = date.getFullYear()
+    var month = date.getMonth() + 1
+    var day = date.getDate()
+    var hour = date.getHours()
+    var minute = date.getMinutes()
+    
+    month = month < 10 ? '0' + month : month
+    day = day < 10 ? '0' + day : day
+    hour = hour < 10 ? '0' + hour : hour
+    minute = minute < 10 ? '0' + minute : minute
+    
+    return year + '-' + month + '-' + day + ' ' + hour + ':' + minute
+  }
+  
+  module.exports = {
+    formatTime: formatTime
+  }
+</wxs>

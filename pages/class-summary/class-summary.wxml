@@ -1,0 +1,97 @@
+<!-- 班主任工作总结 -->
+<view class="container">
+  <view class="card">
+    <view class="form-item">
+      <view class="form-label">教师姓名 *</view>
+      <input 
+        class="form-input" 
+        placeholder="请输入您的姓名"
+        data-field="teacherName"
+        bindinput="onInputChange"
+        value="{{formData.teacherName}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">班级 *</view>
+      <input 
+        class="form-input" 
+        placeholder="例如：高一(3)班"
+        data-field="className"
+        bindinput="onInputChange"
+        value="{{formData.className}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">学期 *</view>
+      <input 
+        class="form-input" 
+        placeholder="例如：2023-2024学年第一学期"
+        data-field="semester"
+        bindinput="onInputChange"
+        value="{{formData.semester}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">学生人数</view>
+      <input 
+        class="form-input" 
+        type="number"
+        placeholder="请输入学生人数"
+        data-field="studentCount"
+        bindinput="onInputChange"
+        value="{{formData.studentCount}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">主要成绩</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请简要描述本学期取得的主要成绩和亮点"
+        data-field="achievements"
+        bindinput="onInputChange"
+        value="{{formData.achievements}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">开展的活动</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请列举本学期组织的主要班级活动"
+        data-field="activities"
+        bindinput="onInputChange"
+        value="{{formData.activities}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">存在的问题</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请描述工作中遇到的问题和不足"
+        data-field="problems"
+        bindinput="onInputChange"
+        value="{{formData.problems}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">改进措施</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请说明下学期的改进计划"
+        data-field="improvements"
+        bindinput="onInputChange"
+        value="{{formData.improvements}}"
+      />
+    </view>
+
+    <button class="btn-primary" bindtap="generateSummary">
+      生成总结
+    </button>
+  </view>
+</view>

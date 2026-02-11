@@ -1,0 +1,15 @@
+<!-- 预览页面 -->
+<view class="container">
+  <view class="content-card">
+    <text class="content-text">{{content}}</text>
+  </view>
+
+  <view class="actions">
+    <button class="btn-export" bindtap="exportWord">
+      导出 Word
+    </button>
+    <button class="btn-copy" bindtap="copyContent">
+      复制内容
+    </button>
+  </view>
+</view>

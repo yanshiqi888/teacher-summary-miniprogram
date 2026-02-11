@@ -1,0 +1,106 @@
+.container {
+  min-height: 100vh;
+  padding: 20rpx;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.count {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.btn-clear {
+  background: #ff4d4f;
+  color: white;
+  font-size: 24rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 8rpx;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.history-item {
+  background: white;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.item-type {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.item-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.item-info {
+  margin-bottom: 20rpx;
+}
+
+.info-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.item-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.btn-view {
+  flex: 1;
+  background: #4A90E2;
+  color: white;
+  font-size: 28rpx;
+  padding: 16rpx;
+  border-radius: 8rpx;
+}
+
+.btn-delete {
+  flex: 1;
+  background: #f0f0f0;
+  color: #666;
+  font-size: 28rpx;
+  padding: 16rpx;
+  border-radius: 8rpx;
+}

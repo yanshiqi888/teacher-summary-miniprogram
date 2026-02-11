@@ -1,0 +1,96 @@
+<!-- 科室工作计划 -->
+<view class="container">
+  <view class="card">
+    <view class="form-item">
+      <view class="form-label">科室名称 *</view>
+      <input 
+        class="form-input" 
+        placeholder="例如：语文教研组"
+        data-field="deptName"
+        bindinput="onInputChange"
+        value="{{formData.deptName}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">负责人姓名 *</view>
+      <input 
+        class="form-input" 
+        placeholder="请输入负责人姓名"
+        data-field="leaderName"
+        bindinput="onInputChange"
+        value="{{formData.leaderName}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">学期 *</view>
+      <input 
+        class="form-input" 
+        placeholder="例如：2023-2024学年第二学期"
+        data-field="semester"
+        bindinput="onInputChange"
+        value="{{formData.semester}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">工作目标</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请描述下学期的主要工作目标"
+        data-field="goals"
+        bindinput="onInputChange"
+        value="{{formData.goals}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">重点工作</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请列举下学期的重点工作内容"
+        data-field="keyWork"
+        bindinput="onInputChange"
+        value="{{formData.keyWork}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">具体措施</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请说明实现目标的具体措施"
+        data-field="measures"
+        bindinput="onInputChange"
+        value="{{formData.measures}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">时间安排</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请说明各项工作的时间安排"
+        data-field="schedule"
+        bindinput="onInputChange"
+        value="{{formData.schedule}}"
+      />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">预期成果</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请描述预期达到的成果"
+        data-field="expectedResults"
+        bindinput="onInputChange"
+        value="{{formData.expectedResults}}"
+      />
+    </view>
+
+    <button class="btn-primary" bindtap="generatePlan">
+      生成计划
+    </button>
+  </view>
+</view>

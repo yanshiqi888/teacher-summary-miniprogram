@@ -1,0 +1,45 @@
+<!-- 首页 - 功能选择 -->
+<view class="container">
+  <view class="header">
+    <text class="title">教师工作助手</text>
+    <text class="subtitle">智能生成工作总结与计划</text>
+  </view>
+
+  <view class="function-list">
+    <view class="function-card" bindtap="goToClassSummary">
+      <view class="icon">📝</view>
+      <view class="function-info">
+        <text class="function-title">班主任工作总结</text>
+        <text class="function-desc">生成学期班级管理总结</text>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+
+    <view class="function-card" bindtap="goToDeptSummary">
+      <view class="icon">📊</view>
+      <view class="function-info">
+        <text class="function-title">科室工作总结</text>
+        <text class="function-desc">生成科室学期工作总结</text>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+
+    <view class="function-card" bindtap="goToDeptPlan">
+      <view class="icon">📅</view>
+      <view class="function-info">
+        <text class="function-title">科室工作计划</text>
+        <text class="function-desc">制定下学期工作计划</text>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+
+    <view class="function-card" bindtap="goToHistory">
+      <view class="icon">🗂️</view>
+      <view class="function-info">
+        <text class="function-title">历史记录</text>
+        <text class="function-desc">查看已生成的文档</text>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+  </view>
+</view>
