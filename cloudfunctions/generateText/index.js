@@ -72,7 +72,7 @@ function generatePrompt(type, formData) {
 }
 
 function generateStudentCommentPrompt(formData) {
-  return "你是一位经验丰富的中学教师，需要为学生写期末评语。\n\n要求：\n- 每条评语约100字\n- 语气鼓励、温和\n- 内容通用，不涉及具体学生特征\n- 涵盖学习态度、课堂表现、作业完成、品德表现等方面\n- 避免AI痕迹，要像真实老师手写的评语\n- **重要：每条评语必须完全不同，不能有任何重复或相似的表达**\n- 从不同角度描述：有的侧重学习态度，有的侧重课堂表现，有的侧重品德，有的侧重进步空间\n- 使用不同的句式结构和表达方式\n\n请生成 " + formData.count + " 条完全不同的学生评语，每条评语用换行符分隔。"
+  return "你是一位经验丰富的中学教师，需要为学生写期末评语。\n\n要求：\n- 每条评语约100字\n- 语气鼓励、温和\n- 内容通用，不涉及具体学生特征\n- 涵盖学习态度、课堂表现、作业完成、品德表现等方面\n- 避免AI痕迹，要像真实老师手写的评语\n- 重要：每条评语必须完全不同，不能有任何重复或相似的表达\n- 从不同角度描述：有的侧重学习态度，有的侧重课堂表现，有的侧重品德，有的侧重进步空间\n- 使用不同的句式结构和表达方式\n\n请生成 " + formData.count + " 条完全不同的学生评语，每条评语用换行符分隔。"
 }
 
 function generateDeptSummaryPrompt(formData) {
@@ -106,7 +106,7 @@ function generateDeptSummaryPrompt(formData) {
   if (problems) prompt += "存在问题：\n" + problems + "\n"
   if (suggestions) prompt += "改进建议：\n" + suggestions + "\n"
   
-  prompt += "\n要求：\n1. 结构完整：包含工作回顾、主要成绩、存在问题、改进方向\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实教师撰写\n4. 符合风格：严格按照\"" + style + "\"的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作总结正文，不要包含标题。"
+  prompt += "\n要求：\n1. 结构完整：包含工作回顾、主要成绩、存在问题、改进方向\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实教师撰写\n4. 符合风格：严格按照" + style + "的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作总结正文，不要包含标题。"
   
   return prompt
 }
@@ -142,7 +142,7 @@ function generateDeptPlanPrompt(formData) {
   if (measures) prompt += "具体措施：\n" + measures + "\n"
   if (schedule) prompt += "时间安排：\n" + schedule + "\n"
   
-  prompt += "\n要求：\n1. 结构完整：包含指导思想、工作目标、主要措施、时间安排\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实教师撰写\n4. 符合风格：严格按照\"" + style + "\"的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作计划正文，不要包含标题。"
+  prompt += "\n要求：\n1. 结构完整：包含指导思想、工作目标、主要措施、时间安排\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实教师撰写\n4. 符合风格：严格按照" + style + "的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作计划正文，不要包含标题。"
   
   return prompt
 }
@@ -183,7 +183,7 @@ function generateClassSummaryPrompt(formData) {
   if (problems) prompt += "存在问题：" + problems + "\n"
   if (additional) prompt += "补充说明：" + additional + "\n"
   
-  prompt += "\n要求：\n1. 结构完整：涵盖班级管理、德育、学习、活动等各方面\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实班主任撰写\n4. 符合风格：严格按照\"" + style + "\"的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作总结正文，不要包含标题。"
+  prompt += "\n要求：\n1. 结构完整：涵盖班级管理、德育、学习、活动等各方面\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实班主任撰写\n4. 符合风格：严格按照" + style + "的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作总结正文，不要包含标题。"
   
   return prompt
 }
@@ -224,7 +224,7 @@ function generateClassPlanPrompt(formData) {
   if (goals) prompt += "工作目标：" + goals + "\n"
   if (additional) prompt += "补充说明：" + additional + "\n"
   
-  prompt += "\n要求：\n1. 结构完整：涵盖班级管理、德育、学习、活动等各方面计划\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实班主任撰写\n4. 符合风格：严格按照\"" + style + "\"的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作计划正文，不要包含标题。"
+  prompt += "\n要求：\n1. 结构完整：涵盖班级管理、德育、学习、活动等各方面计划\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实班主任撰写\n4. 符合风格：严格按照" + style + "的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作计划正文，不要包含标题。"
   
   return prompt
 }

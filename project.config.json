@@ -20,8 +20,10 @@
     "showShadowRootInWxmlPanel": true
   },
   "compileType": "miniprogram",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudbaseRoot": "cloudfunctions/",
   "libVersion": "2.19.4",
-  "appid": "touristappid",
+  "appid": "wxbb1d10f1a667e16b",
   "projectname": "teacher-summary",
   "debugOptions": {
     "hidedInDevtools": []
