@@ -5,17 +5,14 @@ cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
 })
 
-// 腾讯混元 SDK
 const HunyuanClient = tencentcloud.hunyuan.v20230901.Client
 
 exports.main = async (event, context) => {
   const { type, formData } = event
   
   try {
-    // 根据类型生成不同的提示词
     const prompt = generatePrompt(type, formData)
     
-    // 调用腾讯混元 API
     const client = new HunyuanClient({
       credential: {
         secretId: process.env.TENCENT_SECRET_ID,
@@ -57,7 +54,6 @@ exports.main = async (event, context) => {
   }
 }
 
-// 根据类型生成提示词
 function generatePrompt(type, formData) {
   switch(type) {
     case 'student-comment':
@@ -75,24 +71,10 @@ function generatePrompt(type, formData) {
   }
 }
 
-// 学生评语提示词
 function generateStudentCommentPrompt(formData) {
-  return `你是一位经验丰富的中学教师，需要为学生写期末评语。
-
-要求：
-- 每条评语约100字
-- 语气鼓励、温和
-- 内容通用，不涉及具体学生特征
-- 涵盖学习态度、课堂表现、作业完成、品德表现等方面
-- 避免AI痕迹，要像真实老师手写的评语
-- **重要：每条评语必须完全不同，不能有任何重复或相似的表达**
-- 从不同角度描述：有的侧重学习态度，有的侧重课堂表现，有的侧重品德，有的侧重进步空间
-- 使用不同的句式结构和表达方式
-
-请生成 ${formData.count} 条完全不同的学生评语，每条评语用换行符分隔。`
+  return "你是一位经验丰富的中学教师，需要为学生写期末评语。\n\n要求：\n- 每条评语约100字\n- 语气鼓励、温和\n- 内容通用，不涉及具体学生特征\n- 涵盖学习态度、课堂表现、作业完成、品德表现等方面\n- 避免AI痕迹，要像真实老师手写的评语\n- **重要：每条评语必须完全不同，不能有任何重复或相似的表达**\n- 从不同角度描述：有的侧重学习态度，有的侧重课堂表现，有的侧重品德，有的侧重进步空间\n- 使用不同的句式结构和表达方式\n\n请生成 " + formData.count + " 条完全不同的学生评语，每条评语用换行符分隔。"
 }
 
-// 科室工作总结提示词
 function generateDeptSummaryPrompt(formData) {
   const { deptName, semester, length, style, keyEvents, achievements, problems, suggestions } = formData
   
@@ -117,30 +99,18 @@ function generateDeptSummaryPrompt(formData) {
   else if (length === '标准版') lengthGuide = '1000-1500字'
   else lengthGuide = '2000字以上'
   
-  return `你是一位经验丰富的教研组长，需要撰写${semester}的${deptName}工作总结。
-
-基本信息：
-- 科室：${deptName}
-- 学期：${semester}
-- 长度：${lengthGuide}
-- 风格：${styleGuide}
-
-${keyEvents ? `关键事件：\n${keyEvents}\n` : ''}
-${achievements ? `取得成绩：\n${achievements}\n` : ''}
-${problems ? `存在问题：\n${problems}\n` : ''}
-${suggestions ? `改进建议：\n${suggestions}\n` : ''}
-
-要求：
-1. 结构完整：包含工作回顾、主要成绩、存在问题、改进方向
-2. 内容充实：将用户提供的简要信息扩展成完整描述
-3. 语言自然：避免AI痕迹，像真实教师撰写
-4. 符合风格：严格按照"${style}"的要求写作
-5. 字数控制：${lengthGuide}
-
-请直接输出工作总结正文，不要包含标题。`
+  let prompt = "你是一位经验丰富的教研组长，需要撰写" + semester + "的" + deptName + "工作总结。\n\n基本信息：\n- 科室：" + deptName + "\n- 学期：" + semester + "\n- 长度：" + lengthGuide + "\n- 风格：" + styleGuide + "\n\n"
+  
+  if (keyEvents) prompt += "关键事件：\n" + keyEvents + "\n"
+  if (achievements) prompt += "取得成绩：\n" + achievements + "\n"
+  if (problems) prompt += "存在问题：\n" + problems + "\n"
+  if (suggestions) prompt += "改进建议：\n" + suggestions + "\n"
+  
+  prompt += "\n要求：\n1. 结构完整：包含工作回顾、主要成绩、存在问题、改进方向\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实教师撰写\n4. 符合风格：严格按照\"" + style + "\"的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作总结正文，不要包含标题。"
+  
+  return prompt
 }
 
-// 科室工作计划提示词
 function generateDeptPlanPrompt(formData) {
   const { deptName, semester, length, style, activities, goals, measures, schedule } = formData
   
@@ -165,30 +135,18 @@ function generateDeptPlanPrompt(formData) {
   else if (length === '标准版') lengthGuide = '1000-1500字'
   else lengthGuide = '2000字以上'
   
-  return `你是一位经验丰富的教研组长，需要撰写${semester}的${deptName}工作计划。
-
-基本信息：
-- 科室：${deptName}
-- 学期：${semester}
-- 长度：${lengthGuide}
-- 风格：${styleGuide}
-
-${activities ? `计划活动：\n${activities}\n` : ''}
-${goals ? `工作目标：\n${goals}\n` : ''}
-${measures ? `具体措施：\n${measures}\n` : ''}
-${schedule ? `时间安排：\n${schedule}\n` : ''}
-
-要求：
-1. 结构完整：包含指导思想、工作目标、主要措施、时间安排
-2. 内容充实：将用户提供的简要信息扩展成完整描述
-3. 语言自然：避免AI痕迹，像真实教师撰写
-4. 符合风格：严格按照"${style}"的要求写作
-5. 字数控制：${lengthGuide}
-
-请直接输出工作计划正文，不要包含标题。`
+  let prompt = "你是一位经验丰富的教研组长，需要撰写" + semester + "的" + deptName + "工作计划。\n\n基本信息：\n- 科室：" + deptName + "\n- 学期：" + semester + "\n- 长度：" + lengthGuide + "\n- 风格：" + styleGuide + "\n\n"
+  
+  if (activities) prompt += "计划活动：\n" + activities + "\n"
+  if (goals) prompt += "工作目标：\n" + goals + "\n"
+  if (measures) prompt += "具体措施：\n" + measures + "\n"
+  if (schedule) prompt += "时间安排：\n" + schedule + "\n"
+  
+  prompt += "\n要求：\n1. 结构完整：包含指导思想、工作目标、主要措施、时间安排\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实教师撰写\n4. 符合风格：严格按照\"" + style + "\"的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作计划正文，不要包含标题。"
+  
+  return prompt
 }
 
-// 班主任工作总结提示词
 function generateClassSummaryPrompt(formData) {
   const { className, studentCount, semester, length, style, management, moralEducation, studyGuidance, activities, parentCommunication, individualEducation, classSpirit, problems, additional } = formData
   
@@ -213,37 +171,23 @@ function generateClassSummaryPrompt(formData) {
   else if (length === '标准版') lengthGuide = '1500-2000字'
   else lengthGuide = '2500字以上'
   
-  return `你是一位经验丰富的班主任，需要撰写${semester}的${className}班主任工作总结。
-
-基本信息：
-- 班级：${className}
-- 学生人数：${studentCount}人
-- 学期：${semester}
-- 长度：${lengthGuide}
-- 风格：${styleGuide}
-
-工作内容：
-${management ? `班级管理：${management}\n` : ''}
-${moralEducation ? `德育工作：${moralEducation}\n` : ''}
-${studyGuidance ? `学习指导：${studyGuidance}\n` : ''}
-${activities ? `活动组织：${activities}\n` : ''}
-${parentCommunication ? `家校沟通：${parentCommunication}\n` : ''}
-${individualEducation ? `个别教育：${individualEducation}\n` : ''}
-${classSpirit ? `班风学风：${classSpirit}\n` : ''}
-${problems ? `存在问题：${problems}\n` : ''}
-${additional ? `补充说明：${additional}\n` : ''}
-
-要求：
-1. 结构完整：涵盖班级管理、德育、学习、活动等各方面
-2. 内容充实：将用户提供的简要信息扩展成完整描述
-3. 语言自然：避免AI痕迹，像真实班主任撰写
-4. 符合风格：严格按照"${style}"的要求写作
-5. 字数控制：${lengthGuide}
-
-请直接输出工作总结正文，不要包含标题。`
+  let prompt = "你是一位经验丰富的班主任，需要撰写" + semester + "的" + className + "班主任工作总结。\n\n基本信息：\n- 班级：" + className + "\n- 学生人数：" + studentCount + "人\n- 学期：" + semester + "\n- 长度：" + lengthGuide + "\n- 风格：" + styleGuide + "\n\n工作内容：\n"
+  
+  if (management) prompt += "班级管理：" + management + "\n"
+  if (moralEducation) prompt += "德育工作：" + moralEducation + "\n"
+  if (studyGuidance) prompt += "学习指导：" + studyGuidance + "\n"
+  if (activities) prompt += "活动组织：" + activities + "\n"
+  if (parentCommunication) prompt += "家校沟通：" + parentCommunication + "\n"
+  if (individualEducation) prompt += "个别教育：" + individualEducation + "\n"
+  if (classSpirit) prompt += "班风学风：" + classSpirit + "\n"
+  if (problems) prompt += "存在问题：" + problems + "\n"
+  if (additional) prompt += "补充说明：" + additional + "\n"
+  
+  prompt += "\n要求：\n1. 结构完整：涵盖班级管理、德育、学习、活动等各方面\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实班主任撰写\n4. 符合风格：严格按照\"" + style + "\"的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作总结正文，不要包含标题。"
+  
+  return prompt
 }
 
-// 班主任工作计划提示词
 function generateClassPlanPrompt(formData) {
   const { className, studentCount, semester, length, style, management, moralEducation, studyGuidance, activities, parentCommunication, individualEducation, classSpirit, goals, additional } = formData
   
@@ -268,32 +212,19 @@ function generateClassPlanPrompt(formData) {
   else if (length === '标准版') lengthGuide = '1500-2000字'
   else lengthGuide = '2500字以上'
   
-  return `你是一位经验丰富的班主任，需要撰写${semester}的${className}班主任工作计划。
-
-基本信息：
-- 班级：${className}
-- 学生人数：${studentCount}人
-- 学期：${semester}
-- 长度：${lengthGuide}
-- 风格：${styleGuide}
-
-计划内容：
-${management ? `班级管理计划：${management}\n` : ''}
-${moralEducation ? `德育工作计划：${moralEducation}\n` : ''}
-${studyGuidance ? `学习指导计划：${studyGuidance}\n` : ''}
-${activities ? `活动计划：${activities}\n` : ''}
-${parentCommunication ? `家校沟通计划：${parentCommunication}\n` : ''}
-${individualEducation ? `个别教育计划：${individualEducation}\n` : ''}
-${classSpirit ? `班风学风建设计划：${classSpirit}\n` : ''}
-${goals ? `工作目标：${goals}\n` : ''}
-${additional ? `补充说明：${additional}\n` : ''}
-
-要求：
-1. 结构完整：涵盖班级管理、德育、学习、活动等各方面计划
-2. 内容充实：将用户提供的简要信息扩展成完整描述
-3. 语言自然：避免AI痕迹，像真实班主任撰写
-4. 符合风格：严格按照"${style}"的要求写作
-5. 字数控制：${lengthGuide}
-
-请直接输出工作计划正文，不要包含标题。`
+  let prompt = "你是一位经验丰富的班主任，需要撰写" + semester + "的" + className + "班主任工作计划。\n\n基本信息：\n- 班级：" + className + "\n- 学生人数：" + studentCount + "人\n- 学期：" + semester + "\n- 长度：" + lengthGuide + "\n- 风格：" + styleGuide + "\n\n计划内容：\n"
+  
+  if (management) prompt += "班级管理计划：" + management + "\n"
+  if (moralEducation) prompt += "德育工作计划：" + moralEducation + "\n"
+  if (studyGuidance) prompt += "学习指导计划：" + studyGuidance + "\n"
+  if (activities) prompt += "活动计划：" + activities + "\n"
+  if (parentCommunication) prompt += "家校沟通计划：" + parentCommunication + "\n"
+  if (individualEducation) prompt += "个别教育计划：" + individualEducation + "\n"
+  if (classSpirit) prompt += "班风学风建设计划：" + classSpirit + "\n"
+  if (goals) prompt += "工作目标：" + goals + "\n"
+  if (additional) prompt += "补充说明：" + additional + "\n"
+  
+  prompt += "\n要求：\n1. 结构完整：涵盖班级管理、德育、学习、活动等各方面计划\n2. 内容充实：将用户提供的简要信息扩展成完整描述\n3. 语言自然：避免AI痕迹，像真实班主任撰写\n4. 符合风格：严格按照\"" + style + "\"的要求写作\n5. 字数控制：" + lengthGuide + "\n\n请直接输出工作计划正文，不要包含标题。"
+  
+  return prompt
 }
