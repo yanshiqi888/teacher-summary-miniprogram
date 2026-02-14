@@ -55,9 +55,11 @@ page {
 }
 
 .comment-text {
-  font-size: 28rpx;
-  line-height: 1.8;
+  font-size: 30rpx;
+  line-height: 2;
   color: #333;
+  text-align: justify;
+  letter-spacing: 1rpx;
 }
 
 .export-actions {

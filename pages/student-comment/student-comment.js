@@ -133,12 +133,65 @@ Page({
     }
   },
 
-  exportExcel() {
-    wx.showToast({
-      title: '导出 Excel 功能开发中',
-      icon: 'none'
+  async exportExcel() {
+    if (this.data.comments.length === 0) {
+      wx.showToast({
+        title: '没有可导出的内容',
+        icon: 'none'
+      })
+      return
+    }
+
+    wx.showLoading({
+      title: '生成中...'
     })
-    // TODO: 实现 Excel 导出
+
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'exportExcel',
+        data: {
+          comments: this.data.comments
+        }
+      })
+
+      wx.hideLoading()
+
+      if (res.result.success) {
+        wx.showModal({
+          title: '导出成功',
+          content: '文件已生成，点击确定下载',
+          success: (modalRes) => {
+            if (modalRes.confirm) {
+              wx.downloadFile({
+                url: res.result.tempFileURL,
+                success: (downloadRes) => {
+                  wx.openDocument({
+                    filePath: downloadRes.tempFilePath,
+                    fileType: 'xls',
+                    success: () => {
+                      wx.showToast({
+                        title: '打开成功',
+                        icon: 'success'
+                      })
+                    }
+                  })
+                }
+              })
+            }
+          }
+        })
+      } else {
+        throw new Error(res.result.error)
+      }
+    } catch (error) {
+      console.error('导出失败:', error)
+      wx.hideLoading()
+      wx.showModal({
+        title: '导出失败',
+        content: error.message || '请稍后重试',
+        showCancel: false
+      })
+    }
   },
 
   exportText() {

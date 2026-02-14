@@ -15,11 +15,14 @@ page {
 }
 
 .content {
-  font-size: 28rpx;
-  line-height: 2;
+  font-size: 32rpx;
+  line-height: 2.2;
   color: #333;
   white-space: pre-wrap;
   word-break: break-all;
+  text-align: justify;
+  text-indent: 2em;
+  letter-spacing: 1rpx;
 }
 
 .actions {

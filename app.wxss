@@ -40,6 +40,8 @@ page {
   color: #333;
   margin-bottom: 12rpx;
   font-weight: 500;
+  line-height: 1.5;
+  display: block;
 }
 
 .form-input {

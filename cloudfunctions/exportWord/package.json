@@ -1,0 +1,9 @@
+{
+  "name": "exportWord",
+  "version": "1.0.0",
+  "description": "导出内容为 Word/RTF",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
