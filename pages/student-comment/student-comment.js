@@ -29,22 +29,18 @@ Page({
       return
     }
 
-    // 根据数量动态调整批次大小
-    let batchSize = 10
-    if (count > 30) {
-      batchSize = 8 // 数量多时减小批次，避免超时
-    }
-    
+    const batchSize = 8 // 每批8条，平衡速度和稳定性
     const allComments = []
-    const totalBatches = Math.ceil(count / batchSize)
-    let currentBatch = 0
+    let attempts = 0
+    const maxAttempts = Math.ceil(count / batchSize) * 2 // 给足够的重试次数
     
     wx.showLoading({
       title: `生成中 0/${count}`
     })
 
     try {
-      while (allComments.length < count && currentBatch < totalBatches + 2) {
+      // 循环直到数量够了或达到最大尝试次数
+      while (allComments.length < count && attempts < maxAttempts) {
         const needed = count - allComments.length
         const thisBatchSize = Math.min(batchSize, needed)
         
@@ -56,7 +52,7 @@ Page({
           }
         })
         
-        currentBatch++
+        attempts++
         
         if (res.result.success) {
           const newComments = res.result.content
@@ -81,7 +77,7 @@ Page({
         }
       }
       
-      // 最终处理
+      // 最终处理：确保恰好是需要的数量
       const finalComments = allComments.slice(0, count)
       this.setData({ comments: finalComments })
       
@@ -89,11 +85,28 @@ Page({
       this.saveToHistory(finalComments)
       
       wx.hideLoading()
-      wx.showToast({
-        title: `生成成功 ${finalComments.length}条`,
-        icon: 'success',
-        duration: 2000
-      })
+      
+      // 检查数量是否足够
+      if (finalComments.length < count) {
+        wx.showModal({
+          title: '生成不完整',
+          content: `只生成了 ${finalComments.length} 条（目标 ${count} 条）\n\n可能原因：AI 生成不稳定\n建议：点击"生成评语"重试`,
+          confirmText: '重新生成',
+          cancelText: '保留当前',
+          success: (res) => {
+            if (res.confirm) {
+              // 用户选择重新生成
+              this.generateComments()
+            }
+          }
+        })
+      } else {
+        wx.showToast({
+          title: `生成成功 ${finalComments.length}条`,
+          icon: 'success',
+          duration: 2000
+        })
+      }
     } catch (error) {
       console.error('生成失败:', error)
       wx.hideLoading()
@@ -101,7 +114,7 @@ Page({
       if (error.message && error.message.includes('timeout')) {
         wx.showModal({
           title: '生成超时',
-          content: '请尝试减少生成数量，建议每次不超过30条',
+          content: '网络较慢或数量较多导致超时\n建议：减少生成数量或稍后重试',
           showCancel: false
         })
       } else {
