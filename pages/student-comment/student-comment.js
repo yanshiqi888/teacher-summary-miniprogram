@@ -29,32 +29,48 @@ Page({
       return
     }
 
+    // 分批生成，每批10条
+    const batchSize = 10
+    const batches = Math.ceil(count / batchSize)
+    const allComments = []
+    
     wx.showLoading({
-      title: '生成中...'
+      title: `生成中 0/${count}`
     })
 
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'generateText',
-        data: {
-          type: 'student-comment',
-          formData: { count }
-        }
-      })
-      
-      if (res.result.success) {
-        // 将生成的文本按换行符分割成数组
-        const comments = res.result.content.split('\n').filter(c => c.trim())
-        this.setData({ comments })
+      for (let i = 0; i < batches; i++) {
+        const currentBatchSize = Math.min(batchSize, count - i * batchSize)
         
-        wx.hideLoading()
-        wx.showToast({
-          title: '生成成功',
-          icon: 'success'
+        const res = await wx.cloud.callFunction({
+          name: 'generateText',
+          data: {
+            type: 'student-comment',
+            formData: { count: currentBatchSize }
+          }
         })
-      } else {
-        throw new Error(res.result.error)
+        
+        if (res.result.success) {
+          const batchComments = res.result.content.split('\n').filter(c => c.trim())
+          allComments.push(...batchComments)
+          
+          // 更新进度
+          wx.showLoading({
+            title: `生成中 ${allComments.length}/${count}`
+          })
+          
+          // 实时更新显示
+          this.setData({ comments: allComments })
+        } else {
+          throw new Error(res.result.error)
+        }
       }
+      
+      wx.hideLoading()
+      wx.showToast({
+        title: '生成成功',
+        icon: 'success'
+      })
     } catch (error) {
       console.error('生成失败:', error)
       wx.hideLoading()
