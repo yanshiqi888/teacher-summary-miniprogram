@@ -31,23 +31,28 @@ Page({
 
     const allComments = []
     const batchSize = 5 // 每批5条
-    const batches = Math.ceil(count / batchSize)
+    let attempts = 0
+    const maxAttempts = Math.ceil(count / batchSize) + 5 // 多给5次机会
     
     wx.showLoading({
       title: `生成中 0/${count}`
     })
 
     try {
-      for (let i = 0; i < batches; i++) {
-        const needed = Math.min(batchSize, count - allComments.length)
+      // 循环直到数量够了
+      while (allComments.length < count && attempts < maxAttempts) {
+        const needed = count - allComments.length
+        const thisBatch = Math.min(batchSize, needed)
         
         const res = await wx.cloud.callFunction({
           name: 'generateText',
           data: {
             type: 'student-comment',
-            formData: { count: needed }
+            formData: { count: thisBatch }
           }
         })
+        
+        attempts++
         
         if (res.result.success) {
           // 简单分割，不过滤
@@ -60,24 +65,37 @@ Page({
           
           // 更新进度
           wx.showLoading({
-            title: `生成中 ${allComments.length}/${count}`
+            title: `生成中 ${Math.min(allComments.length, count)}/${count}`
           })
           
           // 实时更新显示
-          this.setData({ comments: allComments })
+          this.setData({ comments: allComments.slice(0, count) })
         } else {
           throw new Error(res.result.error)
         }
       }
       
+      // 确保只保留需要的数量
+      const finalComments = allComments.slice(0, count)
+      this.setData({ comments: finalComments })
+      
       // 保存到历史记录
-      this.saveToHistory(allComments)
+      this.saveToHistory(finalComments)
       
       wx.hideLoading()
-      wx.showToast({
-        title: `生成成功 ${allComments.length}条`,
-        icon: 'success'
-      })
+      
+      if (finalComments.length < count) {
+        wx.showModal({
+          title: '提示',
+          content: `生成了${finalComments.length}条（目标${count}条），可以重新生成补充`,
+          showCancel: false
+        })
+      } else {
+        wx.showToast({
+          title: `生成成功 ${finalComments.length}条`,
+          icon: 'success'
+        })
+      }
     } catch (error) {
       console.error('生成失败:', error)
       wx.hideLoading()
