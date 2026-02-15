@@ -17,17 +17,8 @@
       wx:key="index"
     >
       <view class="item-header">
-        <view class="item-type">{{item.typeName}}</view>
-        <view class="item-time">{{item.createTime}}</view>
-      </view>
-      
-      <view class="item-info">
-        <text class="info-text" wx:if="{{item.type === 'class-summary'}}">
-          {{item.formData.className}} - {{item.formData.teacherName}}
-        </text>
-        <text class="info-text" wx:else>
-          {{item.formData.deptName}} - {{item.formData.leaderName}}
-        </text>
+        <view class="item-title">{{item.title}}</view>
+        <view class="item-time">{{utils.formatTime(item.timestamp)}}</view>
       </view>
 
       <view class="item-actions">
@@ -37,6 +28,13 @@
           bindtap="viewDetail"
         >
           查看
+        </button>
+        <button 
+          class="btn-copy" 
+          data-index="{{index}}"
+          bindtap="copyContent"
+        >
+          复制
         </button>
         <button 
           class="btn-delete" 

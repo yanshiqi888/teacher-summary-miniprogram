@@ -96,10 +96,19 @@
   border-radius: 8rpx;
 }
 
+.btn-copy {
+  flex: 1;
+  background: #52c41a;
+  color: white;
+  font-size: 28rpx;
+  padding: 16rpx;
+  border-radius: 8rpx;
+}
+
 .btn-delete {
   flex: 1;
-  background: #f0f0f0;
-  color: #666;
+  background: #ff4d4f;
+  color: white;
   font-size: 28rpx;
   padding: 16rpx;
   border-radius: 8rpx;

@@ -21,6 +21,21 @@ Page({
     })
   },
 
+  copyContent(e) {
+    const index = e.currentTarget.dataset.index
+    const item = this.data.historyList[index]
+    
+    wx.setClipboardData({
+      data: item.content,
+      success: () => {
+        wx.showToast({
+          title: '已复制到剪贴板',
+          icon: 'success'
+        })
+      }
+    })
+  },
+
   deleteItem(e) {
     const index = e.currentTarget.dataset.index
     
