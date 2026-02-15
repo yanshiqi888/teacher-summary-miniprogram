@@ -31,41 +31,32 @@ Page({
 
     const allComments = []
     const batchSize = 5 // 每批5条
-    let totalAttempts = 0
-    const maxAttempts = count * 2 // 最多尝试次数
+    const batches = Math.ceil(count / batchSize)
     
     wx.showLoading({
       title: `生成中 0/${count}`
     })
 
     try {
-      while (allComments.length < count && totalAttempts < maxAttempts) {
-        const needed = count - allComments.length
-        const thisBatch = Math.min(batchSize, needed)
+      for (let i = 0; i < batches; i++) {
+        const needed = Math.min(batchSize, count - allComments.length)
         
         const res = await wx.cloud.callFunction({
           name: 'generateText',
           data: {
             type: 'student-comment',
-            formData: { count: thisBatch }
+            formData: { count: needed }
           }
         })
         
-        totalAttempts++
-        
         if (res.result.success) {
-          // 严格提取以"该生"开头的评语
+          // 简单分割，不过滤
           const newComments = res.result.content
-            .split(/\n+/) // 按一个或多个换行符分割
+            .split('\n')
             .map(c => c.trim())
-            .filter(c => {
-              // 必须以"该生"开头，且长度大于20字
-              return c.startsWith('该生') && c.length > 20
-            })
+            .filter(c => c.length > 0) // 只去掉空行
           
-          // 只取需要的数量
-          const toAdd = newComments.slice(0, needed)
-          allComments.push(...toAdd)
+          allComments.push(...newComments)
           
           // 更新进度
           wx.showLoading({
@@ -79,27 +70,12 @@ Page({
         }
       }
       
-      // 最终检查
-      if (allComments.length < count) {
-        wx.hideLoading()
-        wx.showModal({
-          title: '生成不完整',
-          content: `只生成了${allComments.length}条（目标${count}条），请重试`,
-          showCancel: false
-        })
-        return
-      }
-      
-      // 确保只保留需要的数量
-      const finalComments = allComments.slice(0, count)
-      this.setData({ comments: finalComments })
-      
       // 保存到历史记录
-      this.saveToHistory(finalComments)
+      this.saveToHistory(allComments)
       
       wx.hideLoading()
       wx.showToast({
-        title: `生成成功 ${finalComments.length}条`,
+        title: `生成成功 ${allComments.length}条`,
         icon: 'success'
       })
     } catch (error) {
