@@ -6,6 +6,9 @@ page {
   font-size: 24rpx;
   color: #999;
   margin-top: 8rpx;
+  line-height: 1.6;
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 .comment-list {
