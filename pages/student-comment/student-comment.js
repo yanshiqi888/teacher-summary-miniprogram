@@ -29,9 +29,6 @@ Page({
       return
     }
 
-    // 分批生成，每批10条
-    const batchSize = 10
-    const batches = Math.ceil(count / batchSize)
     const allComments = []
     
     wx.showLoading({
@@ -39,58 +36,45 @@ Page({
     })
 
     try {
-      for (let i = 0; i < batches; i++) {
-        const currentBatchSize = Math.min(batchSize, count - i * batchSize)
-        
+      // 每次生成1条，确保数量准确
+      for (let i = 0; i < count; i++) {
         const res = await wx.cloud.callFunction({
           name: 'generateText',
           data: {
             type: 'student-comment',
-            formData: { count: currentBatchSize }
+            formData: { count: 1 }
           }
         })
         
         if (res.result.success) {
-          // 更智能的分割逻辑
-          let batchComments = res.result.content
-            .split('\n')
-            .map(c => c.trim())
-            .filter(c => c && c.startsWith('该生')) // 只保留以"该生"开头的内容
-          
-          // 如果数量不够，记录警告但继续
-          if (batchComments.length < currentBatchSize) {
-            console.warn(`期望生成${currentBatchSize}条，实际得到${batchComments.length}条`)
+          const comment = res.result.content.trim()
+          if (comment && comment.startsWith('该生')) {
+            allComments.push(comment)
+            
+            // 更新进度
+            wx.showLoading({
+              title: `生成中 ${allComments.length}/${count}`
+            })
+            
+            // 实时更新显示
+            this.setData({ comments: allComments })
+          } else {
+            // 如果不符合要求，重试一次
+            i--
           }
-          
-          allComments.push(...batchComments)
-          
-          // 更新进度
-          wx.showLoading({
-            title: `生成中 ${allComments.length}/${count}`
-          })
-          
-          // 实时更新显示
-          this.setData({ comments: allComments })
         } else {
           throw new Error(res.result.error)
         }
       }
       
-      wx.hideLoading()
+      // 保存到历史记录
+      this.saveToHistory(allComments)
       
-      // 检查最终数量
-      if (allComments.length < count) {
-        wx.showModal({
-          title: '生成完成',
-          content: `已生成${allComments.length}条评语（期望${count}条），可能因为AI生成不稳定导致数量略少`,
-          showCancel: false
-        })
-      } else {
-        wx.showToast({
-          title: '生成成功',
-          icon: 'success'
-        })
-      }
+      wx.hideLoading()
+      wx.showToast({
+        title: '生成成功',
+        icon: 'success'
+      })
     } catch (error) {
       console.error('生成失败:', error)
       wx.hideLoading()
@@ -100,6 +84,21 @@ Page({
         showCancel: false
       })
     }
+  },
+
+  saveToHistory(comments) {
+    const historyList = wx.getStorageSync('historyList') || []
+    historyList.unshift({
+      type: 'student-comment',
+      title: `学生评语 ${comments.length}条`,
+      content: comments.join('\n\n'),
+      timestamp: Date.now()
+    })
+    // 只保留最近50条
+    if (historyList.length > 50) {
+      historyList.pop()
+    }
+    wx.setStorageSync('historyList', historyList)
   },
 
   generateMockComment() {

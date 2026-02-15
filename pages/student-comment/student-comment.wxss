@@ -28,6 +28,7 @@ page {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12rpx;
+  flex-wrap: wrap;
 }
 
 .comment-index {
@@ -39,6 +40,7 @@ page {
 .comment-actions {
   display: flex;
   gap: 16rpx;
+  flex-wrap: wrap;
 }
 
 .btn-small {
@@ -59,10 +61,12 @@ page {
 
 .comment-text {
   font-size: 30rpx;
-  line-height: 2;
+  line-height: 1.8;
   color: #333;
-  text-align: justify;
-  letter-spacing: 1rpx;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal;
+  text-align: left;
 }
 
 .export-actions {
