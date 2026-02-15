@@ -30,34 +30,42 @@ Page({
     }
 
     const allComments = []
-    const batchSize = 5 // 每批5条，避免超时
-    const batches = Math.ceil(count / batchSize)
+    const batchSize = 5 // 每批5条
+    let totalAttempts = 0
+    const maxAttempts = count * 2 // 最多尝试次数
     
     wx.showLoading({
       title: `生成中 0/${count}`
     })
 
     try {
-      for (let i = 0; i < batches; i++) {
-        const needed = Math.min(batchSize, count - allComments.length)
+      while (allComments.length < count && totalAttempts < maxAttempts) {
+        const needed = count - allComments.length
+        const thisBatch = Math.min(batchSize, needed)
         
         const res = await wx.cloud.callFunction({
           name: 'generateText',
           data: {
             type: 'student-comment',
-            formData: { count: needed }
+            formData: { count: thisBatch }
           }
         })
         
+        totalAttempts++
+        
         if (res.result.success) {
-          // 提取所有以"该生"开头的评语
+          // 严格提取以"该生"开头的评语
           const newComments = res.result.content
-            .split('\n')
+            .split(/\n+/) // 按一个或多个换行符分割
             .map(c => c.trim())
-            .filter(c => c && c.startsWith('该生'))
-            .slice(0, needed) // 只取需要的数量
+            .filter(c => {
+              // 必须以"该生"开头，且长度大于20字
+              return c.startsWith('该生') && c.length > 20
+            })
           
-          allComments.push(...newComments)
+          // 只取需要的数量
+          const toAdd = newComments.slice(0, needed)
+          allComments.push(...toAdd)
           
           // 更新进度
           wx.showLoading({
@@ -66,14 +74,20 @@ Page({
           
           // 实时更新显示
           this.setData({ comments: allComments })
-          
-          // 如果已经够了就退出
-          if (allComments.length >= count) {
-            break
-          }
         } else {
           throw new Error(res.result.error)
         }
+      }
+      
+      // 最终检查
+      if (allComments.length < count) {
+        wx.hideLoading()
+        wx.showModal({
+          title: '生成不完整',
+          content: `只生成了${allComments.length}条（目标${count}条），请重试`,
+          showCancel: false
+        })
+        return
       }
       
       // 确保只保留需要的数量
