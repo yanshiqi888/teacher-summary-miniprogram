@@ -6,7 +6,7 @@ cloud.init({
 })
 
 exports.main = async (event, context) => {
-  const { content, contact } = event
+  const { content } = event
   
   try {
     // 创建邮件传输对象
@@ -29,7 +29,6 @@ exports.main = async (event, context) => {
         <h2>用户反馈</h2>
         <p><strong>反馈内容：</strong></p>
         <p>${content.replace(/\n/g, '<br>')}</p>
-        ${contact ? `<p><strong>联系方式：</strong>${contact}</p>` : ''}
         <hr>
         <p style="color: #999; font-size: 12px;">提交时间：${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}</p>
       `

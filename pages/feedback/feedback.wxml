@@ -16,17 +16,6 @@
       <view class="tip">{{content.length}}/500</view>
     </view>
 
-    <view class="form-item">
-      <view class="form-label">留个联系方式？（选填）</view>
-      <input 
-        class="form-input" 
-        placeholder="方便我们回复您"
-        value="{{contact}}"
-        bindinput="onContactChange"
-      />
-      <view class="tip">手机号、微信号等</view>
-    </view>
-
     <button class="btn-primary" bindtap="submitFeedback">
       提交
     </button>

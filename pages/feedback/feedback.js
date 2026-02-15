@@ -1,19 +1,12 @@
 Page({
   data: {
     content: '',
-    contact: '',
     submitted: false
   },
 
   onContentChange(e) {
     this.setData({
       content: e.detail.value
-    })
-  },
-
-  onContactChange(e) {
-    this.setData({
-      contact: e.detail.value
     })
   },
 
@@ -34,8 +27,7 @@ Page({
       const res = await wx.cloud.callFunction({
         name: 'sendEmail',
         data: {
-          content: this.data.content.trim(),
-          contact: this.data.contact.trim()
+          content: this.data.content.trim()
         }
       })
 
