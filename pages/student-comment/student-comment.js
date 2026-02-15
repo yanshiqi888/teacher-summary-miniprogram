@@ -30,9 +30,9 @@ Page({
     }
 
     const allComments = []
-    const batchSize = 5 // 每批5条
+    const batchSize = 10 // 每批10条，减少请求次数
     let attempts = 0
-    const maxAttempts = Math.ceil(count / batchSize) + 5 // 多给5次机会
+    const maxAttempts = Math.ceil(count / batchSize) + 3 // 多给3次机会
     
     wx.showLoading({
       title: `生成中 0/${count}`
