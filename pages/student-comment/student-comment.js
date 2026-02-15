@@ -29,50 +29,79 @@ Page({
       return
     }
 
+    // 根据数量动态调整批次大小
+    let batchSize = 10
+    if (count > 30) {
+      batchSize = 8 // 数量多时减小批次，避免超时
+    }
+    
+    const allComments = []
+    const totalBatches = Math.ceil(count / batchSize)
+    let currentBatch = 0
+    
     wx.showLoading({
-      title: '生成中...'
+      title: `生成中 0/${count}`
     })
 
     try {
-      // 一次性生成所有数量，最快
-      const res = await wx.cloud.callFunction({
-        name: 'generateText',
-        data: {
-          type: 'student-comment',
-          formData: { count: count }
-        }
-      })
-      
-      if (res.result.success) {
-        // 按换行分割
-        const comments = res.result.content
-          .split('\n')
-          .map(c => c.trim())
-          .filter(c => c.length > 0)
+      while (allComments.length < count && currentBatch < totalBatches + 2) {
+        const needed = count - allComments.length
+        const thisBatchSize = Math.min(batchSize, needed)
         
-        this.setData({ comments })
-        
-        // 保存到历史记录
-        this.saveToHistory(comments)
-        
-        wx.hideLoading()
-        wx.showToast({
-          title: `生成成功 ${comments.length}条`,
-          icon: 'success',
-          duration: 2000
+        const res = await wx.cloud.callFunction({
+          name: 'generateText',
+          data: {
+            type: 'student-comment',
+            formData: { count: thisBatchSize }
+          }
         })
-      } else {
-        throw new Error(res.result.error)
+        
+        currentBatch++
+        
+        if (res.result.success) {
+          const newComments = res.result.content
+            .split('\n')
+            .map(c => c.trim())
+            .filter(c => c.length > 0)
+          
+          allComments.push(...newComments)
+          
+          // 更新进度
+          const current = Math.min(allComments.length, count)
+          wx.showLoading({
+            title: `生成中 ${current}/${count}`
+          })
+          
+          // 实时显示
+          this.setData({ 
+            comments: allComments.slice(0, count) 
+          })
+        } else {
+          throw new Error(res.result.error)
+        }
       }
+      
+      // 最终处理
+      const finalComments = allComments.slice(0, count)
+      this.setData({ comments: finalComments })
+      
+      // 保存到历史记录
+      this.saveToHistory(finalComments)
+      
+      wx.hideLoading()
+      wx.showToast({
+        title: `生成成功 ${finalComments.length}条`,
+        icon: 'success',
+        duration: 2000
+      })
     } catch (error) {
       console.error('生成失败:', error)
       wx.hideLoading()
       
-      // 如果超时，提示用户减少数量
       if (error.message && error.message.includes('timeout')) {
         wx.showModal({
           title: '生成超时',
-          content: '数量较多导致超时，建议一次生成不超过30条',
+          content: '请尝试减少生成数量，建议每次不超过30条',
           showCancel: false
         })
       } else {
