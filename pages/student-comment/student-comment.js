@@ -30,16 +30,16 @@ Page({
     }
 
     const allComments = []
-    let retryCount = 0
-    const maxRetries = 3
+    const batchSize = 5 // 每批5条，避免超时
+    const batches = Math.ceil(count / batchSize)
     
     wx.showLoading({
       title: `生成中 0/${count}`
     })
 
     try {
-      while (allComments.length < count && retryCount < maxRetries) {
-        const needed = count - allComments.length
+      for (let i = 0; i < batches; i++) {
+        const needed = Math.min(batchSize, count - allComments.length)
         
         const res = await wx.cloud.callFunction({
           name: 'generateText',
@@ -55,25 +55,22 @@ Page({
             .split('\n')
             .map(c => c.trim())
             .filter(c => c && c.startsWith('该生'))
+            .slice(0, needed) // 只取需要的数量
           
           allComments.push(...newComments)
           
           // 更新进度
           wx.showLoading({
-            title: `生成中 ${Math.min(allComments.length, count)}/${count}`
+            title: `生成中 ${allComments.length}/${count}`
           })
           
-          // 实时更新显示（只显示需要的数量）
-          this.setData({ 
-            comments: allComments.slice(0, count)
-          })
+          // 实时更新显示
+          this.setData({ comments: allComments })
           
-          // 如果数量够了就退出
+          // 如果已经够了就退出
           if (allComments.length >= count) {
             break
           }
-          
-          retryCount++
         } else {
           throw new Error(res.result.error)
         }
